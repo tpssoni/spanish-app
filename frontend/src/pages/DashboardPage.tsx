@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../api/client';
 import { useAuth } from '../auth/AuthContext';
-import type { DashboardData, UnitSummary } from '../api/types';
+import { SCENARIO_LABELS, type ConversationHistoryItem, type DashboardData, type UnitSummary } from '../api/types';
 
 export function DashboardPage() {
   const { user, logout } = useAuth();
@@ -36,13 +36,43 @@ export function DashboardPage() {
           </div>
         )}
 
-        {dashboard && dashboard.wordsDueForReview > 0 && (
+        <div className="grid sm:grid-cols-2 gap-4">
+          {dashboard && dashboard.wordsDueForReview > 0 && (
+            <Link
+              to="/review"
+              className="block bg-amber-600 hover:bg-amber-700 text-white rounded-xl p-4 text-center font-semibold"
+            >
+              Review {dashboard.wordsDueForReview} words now →
+            </Link>
+          )}
           <Link
-            to="/review"
-            className="block bg-amber-600 hover:bg-amber-700 text-white rounded-xl p-4 text-center font-semibold"
+            to="/conversation"
+            className="block bg-blue-600 hover:bg-blue-700 text-white rounded-xl p-4 text-center font-semibold"
           >
-            Review {dashboard.wordsDueForReview} words now →
+            🎤 Practice speaking with Carlos →
           </Link>
+        </div>
+
+        {dashboard && dashboard.recentConversationSessions.length > 0 && (
+          <section>
+            <h2 className="text-xl font-bold text-amber-800 mb-3">Recent conversations</h2>
+            <div className="space-y-2">
+              {(dashboard.recentConversationSessions as ConversationHistoryItem[]).map((session) => (
+                <Link
+                  key={session.id}
+                  to={`/conversation-report/${session.id}`}
+                  className="block bg-white rounded-xl shadow p-3 flex items-center justify-between"
+                >
+                  <span>
+                    {SCENARIO_LABELS[session.scenario]?.emoji} {SCENARIO_LABELS[session.scenario]?.label}
+                  </span>
+                  <span className="text-sm text-gray-500">
+                    {session.accuracy_score != null ? `${Math.round(session.accuracy_score)}% accuracy` : 'In progress'}
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </section>
         )}
 
         <section>

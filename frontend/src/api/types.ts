@@ -85,6 +85,69 @@ export interface ReviewCard {
   next_review: string;
 }
 
+export type Scenario =
+  | 'market'
+  | 'airport'
+  | 'restaurant'
+  | 'introductions'
+  | 'phone_call'
+  | 'doctor'
+  | 'job_interview'
+  | 'free_conversation';
+
+export const SCENARIO_LABELS: Record<Scenario, { emoji: string; label: string }> = {
+  market: { emoji: '🛒', label: 'At the market' },
+  airport: { emoji: '✈️', label: 'At the airport' },
+  restaurant: { emoji: '🍽️', label: 'At a restaurant' },
+  introductions: { emoji: '👋', label: 'Meeting someone new' },
+  phone_call: { emoji: '📞', label: 'Phone call' },
+  doctor: { emoji: '🏥', label: 'At the doctor' },
+  job_interview: { emoji: '💼', label: 'Job interview' },
+  free_conversation: { emoji: '🗣️', label: 'Free conversation' },
+};
+
+export interface ConversationTurn {
+  role: 'user' | 'assistant';
+  text: string;
+  timestamp: string;
+}
+
+export interface ConversationStartResponse {
+  sessionId: string;
+  openerText: string;
+  openerAudioBase64: string;
+}
+
+export interface ConversationRespondResponse {
+  text: string;
+  audioBase64: string;
+}
+
+export interface ConversationError {
+  original: string;
+  corrected: string;
+  explanationEn: string;
+}
+
+export interface ConversationReport {
+  accuracyScore: number;
+  fluencyScore: number;
+  errors: ConversationError[];
+  newVocabularyAttempted: string[];
+  suggestedPhrases: string[];
+  durationSeconds?: number;
+}
+
+export interface ConversationHistoryItem {
+  id: string;
+  scenario: Scenario;
+  accuracy_score: number;
+  fluency_score: number;
+  duration_seconds: number;
+  report_json: ConversationReport;
+  created_at: string;
+}
+
 export interface DashboardData {
   user: User & { last_active_date: string | null };
   wordsDueForReview: number;

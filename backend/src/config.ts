@@ -16,4 +16,6 @@ export const config = {
   jwtSecret: required('JWT_SECRET'),
   jwtExpiresIn: (process.env.JWT_EXPIRES_IN ?? '7d') as jwt.SignOptions['expiresIn'],
   corsOrigin: process.env.CORS_ORIGIN ?? 'http://localhost:5173',
+  openaiApiKey: process.env.OPENAI_API_KEY ?? '',
+  openaiTtsVoice: process.env.OPENAI_TTS_VOICE ?? 'onyx',
 };

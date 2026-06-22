@@ -4,6 +4,9 @@ import { AuthPage } from './pages/AuthPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { LessonPlayerPage } from './pages/LessonPlayerPage';
 import { ReviewPage } from './pages/ReviewPage';
+import { ScenarioPickerPage } from './pages/ScenarioPickerPage';
+import { ConversationPage } from './pages/ConversationPage';
+import { ConversationReportPage } from './pages/ConversationReportPage';
 
 function RequireAuth({ children }: { children: React.ReactElement }) {
   const { token } = useAuth();
@@ -36,6 +39,30 @@ function App() {
         element={
           <RequireAuth>
             <ReviewPage />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="/conversation"
+        element={
+          <RequireAuth>
+            <ScenarioPickerPage />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="/conversation/:scenario"
+        element={
+          <RequireAuth>
+            <ConversationPage />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="/conversation-report/:sessionId"
+        element={
+          <RequireAuth>
+            <ConversationReportPage />
           </RequireAuth>
         }
       />

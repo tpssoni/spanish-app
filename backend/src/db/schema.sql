@@ -67,6 +67,7 @@ CREATE TABLE IF NOT EXISTS conversation_sessions (
   accuracy_score REAL,
   fluency_score REAL,
   duration_seconds INTEGER,
+  report_json JSONB,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
@@ -79,6 +80,8 @@ CREATE TABLE IF NOT EXISTS pronunciation_attempts (
   errors_json JSONB,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
+
+ALTER TABLE conversation_sessions ADD COLUMN IF NOT EXISTS report_json JSONB;
 
 CREATE INDEX IF NOT EXISTS idx_srs_cards_next_review ON srs_cards (user_id, next_review);
 CREATE INDEX IF NOT EXISTS idx_lessons_unit ON lessons (unit_id, order_index);
